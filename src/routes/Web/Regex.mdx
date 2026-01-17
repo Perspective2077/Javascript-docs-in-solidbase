@@ -1,0 +1,234 @@
+---
+title: Regex
+---
+
+## Regex (Regular Expression)
+A Pattern used for searching or validating text
+
+## Brief
+A regex format is 
+
+
+
+```sql
+"/pattern/flags(optional)"
+
+pattern => how to match
+flags => modifiers for matching
+
+```
+`pattern` is what we use most times for validating entries or value , `flags` are addition modifiers we can use for matching although sometimes it's not needed or accepted by languages  
+example : 
+```sql
+pattern.test("test@email.com")
+```
+
+# Pattern
+Regex Pattern expression 
+```sql
+/conditions/
+```
+
+
+
+## 1. Digit
+
+```sql
+\d  or [0-9]
+```
+Means check if text contains a digit  
+
+```js
+/\d/.test("2")  // true
+```
+ 
+## 2. operators
+
+```sql
++  = 1 or more 
+*  = 0 or more
+?  = 0 or one
+```  
+
+```js
+/\d+/.test("")  // false
+```
+```js
+/\d*/.test("")  // true
+```
+```js
+/\d?/.test("")  // true
+```
+
+
+(Practice Question)
+```
+/\d?/.test("233")
+```
+:::details[Answer]
+ True , cause "?" means one or none , it found one 
+::: 
+
+ 
+
+## 3. square class
+
+```sql
+[]
+```
+Checks For Word characters or
+```sql
+[a-z] = for small alphabets
+[A-Z] = for capital alphabets
+[a-zA-Z] or [A-Za-z] = for any alphabets aka \w
+```
+
+```js
+/[a-z]/.test("abc")  // true
+```
+ 
+
+## character class 
+ ```js
+\d	= digit [0-9]
+\D	= non-digit
+\w	= word char [A-Za-z0-9_]
+\W	= non-word
+.	= any char (except newline unless s)
+ ```
+
+ 
+## 4. Special characters
+To specify speicial character you use `\`   
+```sql
+\* = match * in the text
+\@ = match @ in the text
+```
+But they are only used for either specified keywords (w for words , d for digits) or mentioning special characters
+
+
+
+## 4. Anchors || Exact matching
+```sql
+^ condition  $
+```
+This means entire string must match this pattern — nothing extra before or after .. also like validating  
+so if you do like
+```js
+/^\d+$/.test("2323asd") // false , cause char included
+```
+
+(Practice Question)
+```js
+/^\d+\w*$/.test("233sd")
+```
+:::details[Answer]
+ True , cause it have more then one digit and zero or more word char 
+::: 
+
+
+Important clarification (small myth)
+
+❌ ^$ does NOT mean “validate” by itself
+✅ It means “match an empty string”
+```js
+/^$/.test("")      // true
+/^$/.test("a")     // false
+```
+
+## 5. Positive lookahead
+```js
+(?=condition)  : anything but include the condition in the end
+(?!=condition) : anything but doesnt include the condition in the end
+```
+Check that something exists next, but do NOT consume it
+
+```js
+/(?=.)/.test("ok Bye.") // true 
+```
+
+## 6. Anything aka greedy wildcard
+```js
+.*    // matches everything 
+```
+dot means any character so adding star makes it matches anything of any size   
+usally used with lookahead example 
+```js
+/^.*\.$/.test("ok Bye.")  // true ,  cause it means match everything with a dot in the end
+```
+
+
+## Negated character class aka everything except
+```js
+[^items]   // everything except items in the box
+```
+example 
+```js
+/^[^0-9]+$/.test("ok Bye.")  // true , cause it want everything that is atleast one and not a digit between 0-9
+```
+
+
+## White space characters
+
+| Pattern | Name                                   |
+| ------- | -------------------------------------- |
+| `space` | literal space                          |
+| `\s`    | whitespace (space, tab, newline, etc.) |
+| `\S`    | non-whitespace                         |
+| `\t`    | tab                                    |
+| `\n`    | newline                                |
+| `\r`    | carriage return                        |
+| `\f`    | form feed                              |
+| `\v`    | vertical tab                           |
+
+
+
+
+## exact counts
+```js
+{n}     = exactly n times
+{n,}    = at least n times
+{n,m}   = between n and m times
+
+```
+so 4 example 
+```js
+^\d{3}$ // matches exactly 3 digit number
+```
+
+## Grouping & alternation
+```js
+(abc)	= capture group aka group of character as a single match
+(?:abc)	= non-capturing aka grouping but doesnt remeber (advance for regex only )
+\1	backreference
+
+```
+
+
+
+
+## flags
+`gimsuy`
+```sql
+g :	how many matches
+i :	case sensitivity
+m :	meaning of ^ $ / multiline
+s :	meaning of .
+u :	character interpretation / unicode
+y :	match position  / sticky
+```
+
+```sql
+\d   = digit
++    = at least one
+^ $  = validating (full match)
+
+```
+
+
+```sql
+\d        → one digit
+\d+       → one or more digits
+^\d+$     → only digits, nothing else
+
+```

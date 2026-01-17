@@ -1,0 +1,373 @@
+---
+title: FAQ
+---
+
+
+# {frontmatter.title}
+
+
+## 1. What is javascript
+:::details[Answer]
+JavaScript is a high-level, interpreted, and dynamic programming language that provides interactivity on nearly every website today—allowing websites to handle user data, send and receive HTTP requests, and much more. Originally it was created for the Netscape browser in the mid-1990s, but has since evolved into a full-stack language—(thanks to Node.js)—and is now used across web, mobile, and server environments.
+::: 
+
+
+## 2. What is high-level language
+:::details[Answer]
+- A high-level language is a programming language that is closer to human language, making it easier for people to read, write, and understand compared to machine code.  
+Example : Javascript, python, c++ 
+- A low-level language being binary & assembly which is a symbolic representation of machine code. 
+:::
+
+
+## 3. What is Compiled language
+:::details[Answer]
+A compiled language is one where the source code is translated into machine code (or low-level binary) by a compiler before it’s executed. This creates an executable file that then can run directly on the computer’s hardware. Examples most languages include C, C++, and Rust.  
+Because the code is pre-compiled, compiled languages typically offer faster performance and early error detection during the build step.
+:::
+
+
+## 4. What is interpreted language
+:::details[Answer]
+An interpreted language is one where the code is executed directly by an interpreter at runtime, without needing to be compiled into machine code beforehand. The interpreter reads and executes the code line by line (or statement by statement). JavaScript is a classic example,it runs in the browser via the JavaScript engine (like V8), which acts as an interpreter
+:::
+
+
+## 1. What is dynamic language
+:::details[Answer]
+In a dynamic language like JavaScript, you don’t declare variable types. At runtime, Objects can be modified, functions can be created (as anonymous functions) or reassigned. Because of this flexibility, it makes web development fast and flexible but it also means errors—like calling a method that doesn’t exist—often only show up when the code actually runs. Although these issues can be caught earlier by using Typescript
+:::
+
+
+## 5. What is JIT complier
+:::details[Answer]
+JIT (Just-In-Time) compiler is a hybrid approach that combines interpretation and compilation to optimize performance at runtime. Instead of compiling all code ahead of time (like C++) or interpreting it line-by-line forever (like old JavaScript engines), a JIT compiler starts by interpreting code for fast startup, but then monitors how often functions, loops, or blocks are run. When it detects that a piece of code is “hot” (e.g., called or running hundreds or thousands of times), it prioritizes optimizing it by compiling those into shighly efficient machine code on the fly. That’s why JavaScript, despite being dynamic, can run nearly as fast as compiled languages in many cases
+:::
+
+
+
+## 6. Explain the differences between var, let, and const.
+:::details[Answer]
+var, let, and const are all used to declare variables in JavaScript, but they differ in scope, hoisting behavior, and reassignment rules. 
+- var is function-scoped (or globally scoped if outside a function) and is hoisted to the top of its scope and initialized with undefined
+- let and const are block-scoped (limited to {} blocks like if, for, etc.), which makes code more predictable.
+- var can be redeclared in same scope and reassigned wheras let can reassigned but cannot be redeclared & const cannot be redeclared nor reassigned  
+
+`Note` : const ensures the reference is fixed meaning an object or array can still be modified 
+:::
+
+
+
+## 7. What is hoisting in JavaScript?
+:::details[Answer]
+hoisting is JavaScript’s behavior of moving variable and function declarations to the top of their scope during the compilation phase—before the code runs. However, only the declaration is hoisted, not the initialization.
+
+Function declarations are fully hoisted, so you can call them before they appear in code.
+var variables are hoisted and initialized with undefined, so accessing them early gives undefined (not an error).
+let and const are hoisted too, but not initialized—so accessing them before declaration throws a ReferenceError. This gap is called the Temporal Dead Zone (TDZ).
+:::
+
+
+## 8. Explain the concept of scope (global, function, block).
+:::details[Answer]
+Scope in JavaScript determines where a variable is accessible in your code. There are three main types:
+
+Global scope: Variables declared outside any function or block are globally scoped. They’re accessible from anywhere in the program—but overusing them can lead to naming conflicts and bugs.
+Function scope: Variables declared with var inside a function are only accessible within that function. They’re “private” to the function and can’t be accessed from outside.
+Block scope: Introduced with ES6, variables declared with let or const inside a block (like an if statement, for loop, or any code between {}) are only accessible within that block.
+:::
+
+
+## 9. What is the Temporal Dead Zone (TDZ)?
+:::details[Answer]
+The Temporal Dead Zone (TDZ) is the period between when a variable is entered into scope (at the start of a block) and when it’s actually declared in the code. During this time, the variable exists but cannot be accessed—trying to do so throws a ReferenceError.
+
+This only affects variables declared with let and const (not var). Although these variables are hoisted, they are not initialized until their declaration is reached. The TDZ enforces safer coding by preventing accidental use before declaration.
+
+In contrast, var variables are hoisted and initialized with undefined, so they don’t have a TDZ—which is why accessing them early just gives undefined instead of an error. 
+:::
+
+## 10. What is the difference between == and ===
+:::details[Answer]
+The == operator checks for equality with type coercion, while === checks for equality without type coercion—meaning it compares both value and type.
+With ==, JavaScript will automatically convert the types of the operands to try to make them match before comparing. This can lead to unexpected results.
+With ===, if the types are different, it immediately returns false—no conversion happens.
+:::
+
+## 11. what is type coercion?
+:::details[Answer]
+Type coercion is JavaScript’s automatic conversion of a value from one data type to another—usually when performing operations or comparisons that involve mixed types.
+
+JavaScript is dynamically typed, so it often tries to “make things work” by converting values behind the scenes. This happens in:
+
+Comparisons (e.g., ==): '5' == 5 → true (string '5' is coerced to number 5)
+Mathematical operations: '10' - 5 → 5 (string becomes number), but '10' + 5 → '105' (number becomes string!)
+Logical contexts: if ("hello") → truthy, because non-empty strings coerce to true
+:::
+
+## 12. What is NaN? How do you check for it?
+:::details[Answer]
+NaN stands for “Not-a-Number.” It’s a special value in JavaScript that represents the result of an invalid or undefined mathematical operation—like 0 / 0, Math.sqrt(-1), or trying to parse a non-numeric string with Number("hello").
+
+The tricky part? NaN is the only value in JavaScript that is not equal to itself. So NaN === NaN returns false.
+
+Because of this, you can’t check for NaN using == or ===. Instead, use:
+
+Number.isNaN(value) → (preferred) checks if the value is actually NaN (doesn’t coerce).
+isNaN(value) → (older, less reliable) first coerces the value to a number, which can give false positives (e.g., isNaN("hello") → true, but isNaN("123") → false).
+
+:::
+## 13. Explain truthy and falsy values.
+:::details[Answer]
+ JavaScript, every value has an inherent boolean interpretation. When used in a conditional (like an if statement), values are automatically converted to true or false.
+Falsy values are those that evaluate to false. There are only six of them
+```js
+false
+0
+-0
+0n        // BigInt zero
+""        // empty string
+null
+undefined
+NaN
+```
+Everything else is truthy—including objects, arrays, non-empty strings, and even "0", "false", [], and {}.
+
+
+:::
+## 14. What is the this keyword, and how does it work?
+:::details[Answer]
+The this keyword refers to the context in which a function is called—it’s determined at runtime, not when the function is defined. What this points to depends on how the function is invoked.
+
+Default binding:
+In non-strict mode, this defaults to the global object (window in browsers, global in Node.js). In strict mode, it’s undefined. 
+```js
+function foo() { console.log(this); }
+foo(); // → global object (or undefined in strict mode)
+```
+Implicit binding:
+When a function is called as a method of an object, this refers to that object. 
+```js
+const obj = { name: "Ali", greet() { console.log(this.name); } };
+obj.greet(); // → "Ali"
+```
+Explicit binding:
+You can force this using .call(), .apply(), or .bind(). 
+```js
+function greet() { console.log(this.name); }
+const user = { name: "Sam" };
+greet.call(user); // → "Sam"
+```
+Arrow functions:
+Arrow functions do not have their own this—they inherit it from the enclosing lexical scope (like a closure). This makes them great for callbacks inside objects. 
+```js
+const obj = {
+  name: "Ali",
+  greet: () => console.log(this.name) // ❌ `this` is not `obj`!
+};
+```
+:::
+## 15. What is a closure? Provide an example.
+:::details[Answer]
+closure is a function that "remembers" and has access to variables from its outer (enclosing) scope—even after the outer function has finished executing.
+
+This happens because, in JavaScript, functions form closures over the lexical environment in which they were defined. Closures are created every time a function is created, and they’re the reason inner functions can access variables from their parent functions.
+
+Closures are commonly used for: 
+
+Data privacy (emulating private variables)
+Creating factory functions
+Managing state in callbacks or event handlers
+
+```js 
+function createCounter() {
+  let count = 0; // This variable is "private"
+  
+  return function() {
+    count++;
+    return count;
+  };
+}
+
+const counter = createCounter();
+console.log(counter()); // → 1
+console.log(counter()); // → 2
+console.log(counter()); // → 3
+```
+:::
+## 16. Explain function declarations vs. function expressions.
+:::details[Answer]
+Both function declarations and function expressions define functions, but they differ in syntax, hoisting behavior, and how they’re used.
+
+1. Function Declaration:
+```js
+function greet() {
+  console.log("Hello!");
+}
+```
+Hoisted: The entire function (name and body) is hoisted to the top of its scope.
+You can call it before it appears in the code.
+Always named (the function has a .name property).
+
+2. Function Expression:
+```js
+const greet = function() {
+  console.log("Hello!");
+};
+```
+Only the variable declaration (const greet) is hoisted—not the function assignment.
+You cannot call it before the assignment (doing so throws a ReferenceError due to the Temporal Dead Zone).
+Can be anonymous (though modern engines often infer the name from the variable).
+
+
+Key takeaway:
+Use function declarations for top-level, reusable functions (they’re more predictable due to hoisting).
+Use function expressions when assigning functions to variables, passing them as arguments, or using them conditionally. 
+
+:::
+
+## 17. What are arrow functions? How do they differ from regular functions?
+:::details[Answer]
+Arrow functions are a concise syntax for writing functions in JavaScript, introduced in ES6. But beyond shorter syntax, they have key behavioral differences from regular functions:
+
+No own this:
+Arrow functions lexically bind this—they inherit this from the enclosing scope. This makes them ideal for callbacks inside objects or classes, where you don’t want this to change. 
+No arguments object:
+They don’t have access to the arguments object. Use rest parameters (...args) instead. 
+Can’t be used as constructors:
+You cannot call an arrow function with new—it will throw a TypeError. 
+No prototype property:
+Arrow functions don’t have a prototype, since they’re not meant to be used with new. 
+Syntax: 
+```js
+Single param: x => x * 2
+Multiple params: (x, y) => x + y
+Block body: x => { return x * 2; }
+```
+Use arrow functions for short, inline callbacks (like in .map() or event handlers). Use regular functions for methods, constructors, or when you need dynamic this. 
+
+:::
+
+## 18. What is an IIFE?
+:::details[Answer]
+An **IIFE (Immediately Invoked Function Expression)** is a function that is defined and executed right away. It’s used to create a private scope, avoiding polluting the global namespace.
+
+```js
+(function() {
+  var privateVar = "I'm private!";
+  console.log(privateVar);
+})();
+// privateVar is not accessible outside
+```
+## Explain the difference between call, apply, and bind.
+All three methods allow you to explicitly set the value of this inside a function:
+
+call: Invokes the function immediately, passing arguments one by one.
+apply: Invokes the function immediately, passing arguments as an array.
+bind: Returns a new function with this permanently set (does not invoke immediately).
+```js 
+const obj = { name: "Ali" };
+function greet(greeting, punctuation) {
+  console.log(`${greeting}, ${this.name}${punctuation}`);
+}
+
+greet.call(obj, "Hi", "!");     // Hi, Ali!
+greet.apply(obj, ["Hello", "."]); // Hello, Ali.
+const boundGreet = greet.bind(obj, "Hey");
+boundGreet("?"); // Hey, Ali?
+```
+:::
+## 19. What is the event loop?
+:::details[Answer]
+The event loop is JavaScript’s mechanism for handling asynchronous operations while maintaining a single-threaded execution model. It continuously checks the call stack and the callback queue:
+
+Synchronous code runs on the call stack.
+Async operations (like setTimeout, fetch) are handled by Web APIs.
+When async tasks complete, their callbacks go to the task queue.
+The event loop pushes callbacks from the queue to the stack only when the stack is empty.
+This enables non-blocking I/O despite JavaScript being single-threaded.
+:::
+## 20. What is a callback hell, and how can you avoid it?
+:::details[Answer]
+Callback hell (or "pyramid of doom") is deeply nested callbacks that make code hard to read and maintain:
+```js
+getData(a => {
+  getMoreData(a, b => {
+    getEvenMore(b, c => {
+      // ...
+    });
+  });
+});
+```
+
+Solutions:
+
+Use Promises with .then()
+Use async/await
+Modularize callbacks into named functions
+Use modern APIs that return promises
+:::
+
+## 21. Explain callbacks, promises, and async/await.
+:::details[Answer]
+Callbacks: Functions passed as arguments to be executed later. Prone to "callback hell"
+```js 
+fetchData((data) => console.log(data));
+```
+
+Promises: Represent eventual completion (or failure) of an async operation. Have .then() and .catch()
+
+```js 
+fetchData().then(data => console.log(data));
+```
+
+async/await: Syntactic sugar over promises for writing async code that looks synchronous
+```js 
+async function getData() {
+  const data = await fetchData();
+  console.log(data);
+}
+```
+:::
+
+## 22. How do promises work? What are their states?
+:::details[Answer]
+
+A Promise is an object representing the eventual result of an async operation. It has three states:
+
+Pending: Initial state (not fulfilled or rejected)   
+Fulfilled: Operation completed successfully   
+Rejected: Operation failed   
+
+:::
+
+
+
+
+
+## What is the difference between setTimeout(fn, 0) and setImmediate()
+## What is the DOM?
+## Explain event bubbling and event capturing
+## What is event delegation?
+## How do you prevent default behavior or stop event propagation?
+## What is throttling? When would you use it?
+## What is debouncing? How is it different from throttling?
+## What is lazy loading?
+## What are memory leaks in JavaScript? How can you avoid them?
+## What is prototypal inheritance?
+## Explain the prototype chain.
+## What is the Temporal Dead Zone (TDZ)?
+## How does the new keyword work?
+## What is currying in JavaScript?
+## How do you handle errors in JavaScript?
+## Explain the difference between null and undefined.
+## What is the difference between slice() and splice()
+## How do you check if an object is an array?
+## What is JSON? How is it used in JavaScript?
+## How do you deep clone an object in JavaScript?
+## What is a higher-order function? Can you give examples from built-in JS methods?"
+## What is a recursive function? Explain with example
+## What is a 'stack overflow' in the context of recursion?
+## 
+## 
+## 

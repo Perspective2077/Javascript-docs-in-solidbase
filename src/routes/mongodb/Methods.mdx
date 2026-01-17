@@ -1,0 +1,106 @@
+---
+title: Methods
+---
+
+# Mongodb Methods
+So we will discuss all the query methods you can use to do crud operation in db in different ways
+1. Document
+2. query
+
+## Mongoose Methods Reference
+
+### 📄 Document Methods  
+*(Available on document instances — e.g., `const user = new User(...)`)*
+
+| Method | Purpose | Example |
+|--------|--------|--------|
+| `.save()` | Saves the document (insert or update) | `await user.save()` |
+| `.validate()` | Runs schema validation without saving | `await user.validate()` |
+| `.remove()` / `.deleteOne()` | Deletes the document | `await user.deleteOne()` |
+| `.isModified([path])` | Checks if field changed since load/create | `user.isModified('email')` |
+| `.isSelected(path)` | Checks if field was selected in query | `user.isSelected('password')` |
+| `.get(path)` | Gets nested field value safely | `user.get('profile.city')` |
+| `.set(path, val)` | Sets nested field value | `user.set('profile.city', 'NYC')` |
+| `.toObject([options])` | Converts to plain JS object | `user.toObject()` |
+| `.toJSON([options])` | Alias for `.toObject()` (used by `JSON.stringify`) | `JSON.stringify(user)` |
+| `.populate(path)` | Fills referenced docs (if not done in query) | `await user.populate('posts')` |
+| `.depopulate([path])` | Removes populated data | `user.depopulate('posts')` |
+
+> 💡 These only work on **document instances**, not on the model itself.
+
+---
+
+### 🔍 Query Methods  
+*(Available on model or query objects — e.g., `User.find()`)*
+
+#### Execution
+| Method | Purpose |
+|--------|--------|
+| `.exec()` | Executes the query (returns Promise) |
+| `await query` | Also executes (queries are thenable) |
+
+#### Find
+| Method | Purpose | Example |
+|--------|--------|--------|
+| `.find(conditions)` | Find all matching documents | `User.find({ active: true })` |
+| `.findOne(conditions)` | Find one document | `User.findOne({ email: "a@example.com" })` |
+| `.findById(id)` | Shortcut for `findOne({ _id: id })` | `User.findById("...")` |
+| `.findOneAndDelete(conditions)` | Find and delete one | `User.findOneAndDelete({ temp: true })` |
+| `.findOneAndReplace(conditions, doc)` | Find and replace entire doc | `User.findOneAndReplace({ _id }, newDoc)` |
+| `.findOneAndUpdate(conditions, update)` | Find, update, and return | `User.findOneAndUpdate({ _id }, { $set: { name: "B" } })` |
+
+#### Update
+| Method | Purpose | Example |
+|--------|--------|--------|
+| `.updateOne(conditions, update)` | Update first match | `User.updateOne({ _id }, { $inc: { views: 1 } })` |
+| `.updateMany(conditions, update)` | Update all matches | `User.updateMany({ role: "user" }, { $set: { active: false } })` |
+| `.replaceOne(conditions, doc)` | Replace entire document | `User.replaceOne({ _id }, fullNewDoc)` |
+
+#### Delete
+| Method | Purpose | Example |
+|--------|--------|--------|
+| `.deleteOne(conditions)` | Delete first match | `User.deleteOne({ temp: true })` |
+| `.deleteMany(conditions)` | Delete all matches | `User.deleteMany({ inactive: true })` |
+
+#### Query Helpers
+| Method | Purpose | Example |
+|--------|--------|--------|
+| `.where(path, [val])` | Add condition (chainable) | `User.where('age').gt(18)` |
+| `.gt(val)`, `.gte(val)` | Greater than / equal | `User.where('age').gt(18)` |
+| `.lt(val)`, `.lte(val)` | Less than / equal | `User.where('age').lt(65)` |
+| `.in(vals)`, `.nin(vals)` | In / not in array | `User.where('role').in(['admin'])` |
+| `.exists(bool)` | Check if field exists | `User.where('deletedAt').exists(false)` |
+| `.regex(pattern)` | Regex match | `User.where('name').regex(/^A/)` |
+| `.select(fields)` | Choose fields to return | `User.select('name email')` |
+| `.limit(n)` | Limit results | `User.limit(10)` |
+| `.skip(n)` | Skip results | `User.skip(20)` |
+| `.sort(...)` | Sort results | `User.sort('-createdAt')` |
+| `.populate(path)` | Populate references | `User.populate('posts')` |
+| `.lean([bool])` | Return plain objects (no Mongoose docs) | `User.lean()` |
+| `.countDocuments(conds)` | Count matching docs | `User.countDocuments({ active: true })` |
+| `.estimatedDocumentCount()` | Fast count (no query) | `User.estimatedDocumentCount()` |
+
+---
+
+### 🏗 Model-Only Methods  
+*(Called directly on the model — e.g., `User.create()`)*
+
+| Method | Purpose | Example |
+|--------|--------|--------|
+| `.create(doc)` | Insert one or more docs | `User.create({ name: "A" })` |
+| `.insertMany(docs)` | Bulk insert | `User.insertMany([doc1, doc2])` |
+| `.bulkWrite(ops)` | Complex bulk operations | `User.bulkWrite([...])` |
+| `.aggregate(pipeline)` | Run aggregation pipeline | `User.aggregate([{ $group: ... }])` |
+| `.distinct(field, cond)` | Get unique values | `User.distinct('role')` |
+
+---
+
+### 🔑 Key Contexts in Middleware
+
+| Context | `this` refers to | Available Methods |
+|--------|------------------|------------------|
+| **Document Middleware** (`pre('save')`, `post('validate')`) | Document instance | `this.name`, `this.isModified()` |
+| **Query Middleware** (`pre('findOneAndUpdate')`, `post('find')`) | Query object | `this.getUpdate()`, `this.getFilter()` |
+
+> ⚠️ Never use `this.getUpdate()` in document middleware — it doesn’t exist!  
+Also .create() method is like creating and new model instance and saving it , so you don't need to manually call .save() , so this inside pre post method's when applied to create() method gives you the object document
